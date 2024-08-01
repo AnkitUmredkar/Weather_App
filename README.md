@@ -11,7 +11,7 @@ spiritual guidance through the teachings of the Bhagvat Geeta. By incorporating 
 storage, Shared Preferences, like functionality, themes, chapter images, splash screens, detailed
 verse screens, and multi-language support, the app offers a comprehensive solution for users to
 explore and engage with this sacred text.
-
+<h1 align="left"> </h1>
 <h2 align="center"> 🔶 Light Mode 🔶 </h2>
 
 <div align="center">
