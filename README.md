@@ -35,6 +35,8 @@ explore and engage with this sacred text.
   <img height="550" src="https://github.com/user-attachments/assets/26084567-554d-49bc-acb8-6883ea3023f4"/>
 </div>
 
+<h1 align="left"> </h1>
+
 <h2 align="center"> 🔶 Dark Mode 🔶 </h2>
 
 <div align="center">
