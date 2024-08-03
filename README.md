@@ -56,5 +56,5 @@ explore and engage with this sacred text.
 <h1 align="left"> </h1>
 
 <div align="center">
-  <video height="550" src="https://github.com/user-attachments/assets/67eb57d7-9885-4d40-bacc-d5ca8d889ba6"/>
+  <video height="550" src="https://github.com/user-attachments/assets/9b08a606-d8e1-4fc2-a16d-b7e2151c4249"/>
 </div>
