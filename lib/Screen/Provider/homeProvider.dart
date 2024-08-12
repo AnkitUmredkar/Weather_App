@@ -16,7 +16,6 @@ class HomeProvider extends ChangeNotifier {
   Future<HomeModel?> fromMap(String search) async {
     final data = await ApiHelper.apiHelper.fetchApiData(search);
     homeModel = HomeModel.fromJson(data);
-    // notifyListeners();
     return homeModel;
   }
 
@@ -29,4 +28,10 @@ class HomeProvider extends ChangeNotifier {
     isOn = value;
     notifyListeners();
   }
+
+  // void updateDrawerPageColor(int isDay){
+  //   isNightOrDay = isDay;
+  //   print(isNightOrDay);
+  //   notifyListeners();
+  // }
 }

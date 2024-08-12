@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sky_scrapper/Screen/Modal/homeModel.dart';
@@ -20,6 +22,8 @@ class SearchLocation extends StatelessWidget {
         Provider.of<SearchProvider>(context, listen: true);
     HomeProvider homeProviderFalse =
         Provider.of<HomeProvider>(context, listen: false);
+    HomeProvider homeProviderTrue =
+    Provider.of<HomeProvider>(context, listen: true);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return SafeArea(
@@ -29,7 +33,7 @@ class SearchLocation extends StatelessWidget {
           children: [
             (hm.current.isDay == 1)
                 ? Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -41,13 +45,13 @@ class SearchLocation extends StatelessWidget {
                     ),
                   )
                 : Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          const Color(0xff19043D),
-                          const Color(0xff341152),
+                          Color(0xff19043D),
+                          Color(0xff341152),
                         ],
                       ),
                     ),
@@ -65,7 +69,7 @@ class SearchLocation extends StatelessWidget {
                             onTap: () {
                               Navigator.of(context).pop();
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.arrow_back,
                               color: Colors.white,
                             ),
@@ -78,8 +82,8 @@ class SearchLocation extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
-                          Spacer(),
-                          Icon(
+                          const Spacer(),
+                          const Icon(
                             Icons.map,
                             color: Colors.white,
                           )
@@ -91,18 +95,24 @@ class SearchLocation extends StatelessWidget {
                       child: TextField(
                         controller: controller,
                         cursorColor: Colors.white70,
-                        style: TextStyle(color: Colors.white),
-                        onSubmitted: (value) {
-                          searchProviderFalse.searchLocation(value);
+                        style: const TextStyle(
+                            color: Colors.white,
+                            decoration: TextDecoration.none),
+                        onChanged: (value) {
+                          if (value != '') {
+                            searchProviderFalse.searchLocation(value);
+                          } else {
+                            searchProviderFalse.showWholeList();
+                          }
                         },
                         decoration: InputDecoration(
-                            suffixIcon: Icon(
+                            suffixIcon: const Icon(
                               Icons.my_location_outlined,
                               color: Colors.white,
                             ),
-                            hintStyle: TextStyle(color: Colors.white70),
+                            hintStyle: const TextStyle(color: Colors.white70),
                             hintText: 'City Name',
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.search,
                               color: Colors.white70,
                             ),
@@ -126,19 +136,21 @@ class SearchLocation extends StatelessWidget {
                                 print('Success');
                                 return ListTile(
                                   onTap: () {
-                                    homeProviderFalse
-                                        .searchLocation(hm.location.name);
+                                    homeProviderFalse.searchLocation(hm.location.name);
+                                    // homeProviderFalse.updateDrawerPageColor(
+                                    //     hm.current.isDay);
                                     Navigator.of(context).pop();
                                   },
                                   title: Text(
                                     hm!.location.name,
-                                    style: TextStyle(color: Colors.white),
+                                    style: const TextStyle(color: Colors.white),
                                   ),
                                   subtitle: Text(
                                     '${hm.location.region}/${hm.location.country}',
-                                    style: TextStyle(color: Colors.white70),
+                                    style:
+                                        const TextStyle(color: Colors.white70),
                                   ),
-                                  leading: Icon(
+                                  leading: const Icon(
                                     Icons.location_on,
                                     color: Colors.white,
                                   ),
@@ -150,21 +162,34 @@ class SearchLocation extends StatelessWidget {
                                   ),
                                 );
                               } else if (snapshot.hasError) {
-                                return Text(snapshot.error.toString());
+                                return Padding(
+                                  padding: EdgeInsets.only(top: height * 0.28),
+                                  child: Center(
+                                    child: Text(
+                                      textAlign: TextAlign.center,
+                                      'No Result Found !',
+                                      style: TextStyle(
+                                          color: Colors.white70,
+                                          fontSize: width * 0.04),
+                                    ),
+                                  ),
+                                );
                               } else {
                                 return Padding(
-                                  padding: const EdgeInsets.only(top: 50),
+                                  padding: EdgeInsets.only(top: height * 0.28),
                                   child: const Center(
-                                    child: CircularProgressIndicator(color: Colors.white70,),
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white70,
+                                    ),
                                   ),
                                 );
                               }
                             },
                           )
                         : Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 12),
@@ -177,8 +202,8 @@ class SearchLocation extends StatelessWidget {
                                     ),
                                   ),
                                   FutureBuilder(
-                                    future: searchProviderFalse
-                                        .fromMap(searchProviderTrue.search),
+                                    future:
+                                        searchProviderFalse.fromMap(homeProviderTrue.search),
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
                                         HomeModel? hm = snapshot.data;
@@ -194,21 +219,23 @@ class SearchLocation extends StatelessWidget {
                                                 cities.length, (index) {
                                           return ListTile(
                                             onTap: () {
-                                              homeProviderFalse.searchLocation(
-                                                  cities[index]['city']);
+                                              homeProviderFalse.searchLocation(cities[index]['city']);
+                                              print(hm!.location.name);
+                                              // homeProviderFalse.updateDrawerPageColor(hm!.current.isDay);
+                                              // print(hm!.current.isDay);
                                               Navigator.of(context).pop();
                                             },
                                             title: Text(
                                               cities[index]['city'],
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.white),
                                             ),
                                             subtitle: Text(
                                               '${cities[index]['state']}/${cities[index]['country']}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.white70),
                                             ),
-                                            leading: Icon(
+                                            leading: const Icon(
                                               Icons.location_on,
                                               color: Colors.white,
                                             ),
@@ -220,10 +247,18 @@ class SearchLocation extends StatelessWidget {
                                           );
                                         }));
                                       } else if (snapshot.hasError) {
-                                        return Text(snapshot.error.toString());
+                                        return Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: Text(
+                                            textAlign: TextAlign.center,
+                                            'No Result Found!',
+                                            style: TextStyle(
+                                                fontSize: width * 0.042),
+                                          ),
+                                        );
                                       } else {
-                                        return Center(
-                                          child: const Padding(
+                                        return const Center(
+                                          child: Padding(
                                             padding: EdgeInsets.only(top: 100),
                                             child: CircularProgressIndicator(
                                               color: Colors.white70,
@@ -235,8 +270,8 @@ class SearchLocation extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                            ),
                           ),
-                        ),
                   ],
                 );
               },

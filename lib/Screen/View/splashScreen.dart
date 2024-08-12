@@ -1,20 +1,24 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../Provider/homeProvider.dart';
 import 'homePage.dart';
 import 'package:lottie/lottie.dart';
 
-
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
+    HomeProvider homeProviderFalse =
+    Provider.of<HomeProvider>(context, listen: false);
+    HomeProvider homeProviderTrue =
+    Provider.of<HomeProvider>(context, listen: true);
     Timer(const Duration(seconds: 4), () {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) =>  HomePage()));
     });
-    double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width ;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(

@@ -8,15 +8,15 @@ import 'package:sky_scrapper/Screen/View/searchLocation.dart';
 import '../Provider/savedLocationProvider.dart';
 
 bool changeTemp = false;
-int isNightOrDay = 1;
+int isNightOrDay = 0;
 HomeModel? hm;
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     HomeProvider homeProviderFalse =
         Provider.of<HomeProvider>(context, listen: false);
     HomeProvider homeProviderTrue =
@@ -32,26 +32,38 @@ class HomePage extends StatelessWidget {
         body: Stack(
           children: [
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: (isNightOrDay == 1)
-                        ? [
-                            const Color(0xff0d5cc5),
-                            const Color(0xff439cf3),
-                          ]
-                        : [
-                            const Color(0xff19043D),
-                            const Color(0xff341152),
-                          ]),
+                    colors:  [
+                      Color(0xff0d5cc5),
+                      Color(0xff439cf3),
+                    ]),
               ),
             ),
+            // Container(
+            //   decoration: BoxDecoration(
+            //     gradient: LinearGradient(
+            //         begin: Alignment.topCenter,
+            //         end: Alignment.bottomCenter,
+            //         colors: (isNightOrDay == 1)
+            //             ? [
+            //           const Color(0xff0d5cc5),
+            //           const Color(0xff439cf3),
+            //         ]
+            //             : [
+            //           const Color(0xff19043D),
+            //           const Color(0xff341152),
+            //         ]),
+            //   ),
+            // ),
             FutureBuilder(
               future: homeProviderFalse.fromMap(homeProviderFalse.search),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   hm = snapshot.data;
+                  // homeProviderFalse.updateDrawerPageColor(hm!.current.isDay);
                   isNightOrDay = hm!.current.isDay;
                   print('Success');
                   return Stack(
@@ -69,6 +81,8 @@ class HomePage extends StatelessWidget {
                               children: [
                                 GestureDetector(
                                   onTap: () {
+                                    // homeProviderFalse.updateDrawerPageColor(hm!.current.isDay);
+                                    // print('------------------>${isNightOrDay}');
                                     _scaffoldKey.currentState!.openDrawer();
                                   },
                                   child: const Icon(
@@ -89,6 +103,7 @@ class HomePage extends StatelessWidget {
                                 const Spacer(),
                                 GestureDetector(
                                   onTap: () {
+                                    controller = TextEditingController();
                                     isShow = false;
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
@@ -109,60 +124,58 @@ class HomePage extends StatelessWidget {
                                 child: SingleChildScrollView(
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         height: 35,
-                                        width: 65,
-                                        //width * 0.175
+                                        width: 65, //width * 0.175
                                         padding: const EdgeInsets.all(2.5),
                                         decoration: BoxDecoration(
                                             color: Colors.black26,
                                             borderRadius:
-                                                BorderRadius.circular(5)),
+                                            BorderRadius.circular(5)),
                                         child: GestureDetector(
                                           onTap: () {
-                                            homeProviderFalse
-                                                .changeTemperature();
+                                            homeProviderFalse.changeTemperature();
                                           },
                                           child: Row(
                                             children: [
                                               Expanded(
                                                   child: Container(
-                                                alignment: Alignment.center,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
                                                         BorderRadius.circular(
                                                             6),
-                                                    color: (changeTemp)
-                                                        ? Colors.white
-                                                        : null),
-                                                child: Text(
-                                                  'F',
-                                                  style: TextStyle(
-                                                      color: (changeTemp)
-                                                          ? Colors.teal
-                                                          : Colors.white),
-                                                ),
-                                              )),
+                                                        color: (changeTemp)
+                                                            ? Colors.white
+                                                            : null),
+                                                    child: Text(
+                                                      'F',
+                                                      style: TextStyle(
+                                                          color: (changeTemp)
+                                                              ? Colors.teal
+                                                              : Colors.white),
+                                                    ),
+                                                  )),
                                               Expanded(
                                                   child: Container(
-                                                alignment: Alignment.center,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
                                                         BorderRadius.circular(
                                                             6),
-                                                    color: (!changeTemp)
-                                                        ? Colors.white
-                                                        : null),
-                                                child: Text(
-                                                  'C',
-                                                  style: TextStyle(
-                                                      color: (changeTemp)
-                                                          ? Colors.white
-                                                          : Colors.teal),
-                                                ),
-                                              ))
+                                                        color: (!changeTemp)
+                                                            ? Colors.white
+                                                            : null),
+                                                    child: Text(
+                                                      'C',
+                                                      style: TextStyle(
+                                                          color: (changeTemp)
+                                                              ? Colors.white
+                                                              : Colors.teal),
+                                                    ),
+                                                  ))
                                             ],
                                           ),
                                         ),
@@ -171,7 +184,7 @@ class HomePage extends StatelessWidget {
                                       //todo -------------------------------> Text
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             '${(changeTemp) ? hm!.current.tempF.round() : hm!.current.tempC.round()}°'
@@ -188,8 +201,8 @@ class HomePage extends StatelessWidget {
                                                     width * 0.026),
                                                 decoration: BoxDecoration(
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
+                                                    BorderRadius.circular(
+                                                        5),
                                                     color: Colors.white54
                                                         .withOpacity(0.2)),
                                                 child: const Icon(
@@ -212,13 +225,15 @@ class HomePage extends StatelessWidget {
                                                     hm!.current.isDay,
                                                     hm!
                                                         .forecastModel
-                                                        .forecastDay.first
+                                                        .forecastDay
+                                                        .first
                                                         .day
                                                         .maxtemp_c
                                                         .round(),
                                                     hm!
                                                         .forecastModel
-                                                        .forecastDay.first
+                                                        .forecastDay
+                                                        .first
                                                         .day
                                                         .mintemp_c
                                                         .round(),
@@ -229,8 +244,8 @@ class HomePage extends StatelessWidget {
                                                       width * 0.026),
                                                   decoration: BoxDecoration(
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
+                                                      BorderRadius.circular(
+                                                          5),
                                                       color: Colors.white54
                                                           .withOpacity(0.2)),
                                                   child: const Icon(
@@ -256,7 +271,7 @@ class HomePage extends StatelessWidget {
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             'Hourly',
@@ -286,76 +301,76 @@ class HomePage extends StatelessWidget {
                                                     .first
                                                     .hour
                                                     .length, (index) {
-                                          final hour = hm!.forecastModel
-                                              .forecastDay.first.hour[index];
-                                          return Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: width * 0.025,
-                                                vertical: width * 0.03),
-                                            decoration: BoxDecoration(
-                                                border: (index == 0)
-                                                    ? const Border(
-                                                        top: BorderSide(
-                                                            width: 1,
-                                                            color:
-                                                                Colors.white12),
-                                                        bottom: BorderSide(
-                                                            width: 1,
-                                                            color:
-                                                                Colors.white12),
-                                                        right: BorderSide(
-                                                            width: 1,
-                                                            color:
-                                                                Colors.white12),
-                                                      )
-                                                    : const Border(
-                                                        top: BorderSide(
-                                                            width: 1,
-                                                            color:
-                                                                Colors.white12),
-                                                        bottom: BorderSide(
-                                                            width: 1,
-                                                            color:
-                                                                Colors.white12),
-                                                        left: BorderSide(
-                                                            width: 1,
-                                                            color:
-                                                                Colors.white12),
-                                                      )),
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  '${hour.time.split(" ").sublist(1, 2).join(" ")} ',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: width * 0.034,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 9),
-                                                Align(
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    child: Text(
-                                                      '${hour.chance_of_rain}%'
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                          fontSize:
-                                                              width * 0.032,
-                                                          color: Colors.amber),
+                                              final hour = hm!.forecastModel
+                                                  .forecastDay.first.hour[index];
+                                              return Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: width * 0.025,
+                                                    vertical: width * 0.03),
+                                                decoration: BoxDecoration(
+                                                    border: (index == 0)
+                                                        ? const Border(
+                                                      top: BorderSide(
+                                                          width: 1,
+                                                          color:
+                                                          Colors.white12),
+                                                      bottom: BorderSide(
+                                                          width: 1,
+                                                          color:
+                                                          Colors.white12),
+                                                      right: BorderSide(
+                                                          width: 1,
+                                                          color:
+                                                          Colors.white12),
+                                                    )
+                                                        : const Border(
+                                                      top: BorderSide(
+                                                          width: 1,
+                                                          color:
+                                                          Colors.white12),
+                                                      bottom: BorderSide(
+                                                          width: 1,
+                                                          color:
+                                                          Colors.white12),
+                                                      left: BorderSide(
+                                                          width: 1,
+                                                          color:
+                                                          Colors.white12),
                                                     )),
-                                                Image.network(
-                                                    'https:${hour.hourConditionModal.icon}'),
-                                                const SizedBox(height: 14),
-                                                Text(
-                                                  '${hour.temp_c.round()}°',
-                                                  style: TextStyle(
-                                                      fontSize: width * 0.034,
-                                                      color: Colors.white),
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        })),
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      '${hour.time.split(" ").sublist(1, 2).join(" ")} ',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: width * 0.034,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 9),
+                                                    Align(
+                                                        alignment:
+                                                        Alignment.centerRight,
+                                                        child: Text(
+                                                          '${hour.chance_of_rain}%'
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              fontSize:
+                                                              width * 0.032,
+                                                              color: Colors.amber),
+                                                        )),
+                                                    Image.network(
+                                                        'https:${hour.hourConditionModal.icon}'),
+                                                    const SizedBox(height: 14),
+                                                    Text(
+                                                      '${hour.temp_c.round()}°',
+                                                      style: TextStyle(
+                                                          fontSize: width * 0.034,
+                                                          color: Colors.white),
+                                                    )
+                                                  ],
+                                                ),
+                                              );
+                                            })),
                                       ),
                                       //todo---------------------------> Current Condition
                                       SizedBox(
@@ -363,7 +378,7 @@ class HomePage extends StatelessWidget {
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             'Current Conditions',
@@ -393,11 +408,11 @@ class HomePage extends StatelessWidget {
                                             vertical: height * 0.016),
                                         child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
                                             Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 Row(
                                                   children: [
@@ -411,8 +426,8 @@ class HomePage extends StatelessWidget {
                                                     ),
                                                     Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      CrossAxisAlignment
+                                                          .start,
                                                       children: [
                                                         Text(
                                                           'Feels like',
@@ -429,10 +444,10 @@ class HomePage extends StatelessWidget {
                                                           '${hm!.forecastModel.forecastDay.first.hour[currentHour].feelslike_c.round()}°',
                                                           style: TextStyle(
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                              FontWeight
+                                                                  .w500,
                                                               color:
-                                                                  Colors.white,
+                                                              Colors.white,
                                                               fontSize: width *
                                                                   0.042),
                                                         ),
@@ -453,8 +468,8 @@ class HomePage extends StatelessWidget {
                                                     ),
                                                     Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      CrossAxisAlignment
+                                                          .start,
                                                       children: [
                                                         Text(
                                                           'Wind Speed',
@@ -471,10 +486,10 @@ class HomePage extends StatelessWidget {
                                                           '${hm!.forecastModel.forecastDay.first.hour[currentHour].wind_kph.round()} km/h',
                                                           style: TextStyle(
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                              FontWeight
+                                                                  .w500,
                                                               color:
-                                                                  Colors.white,
+                                                              Colors.white,
                                                               fontSize: width *
                                                                   0.042),
                                                         ),
@@ -495,8 +510,8 @@ class HomePage extends StatelessWidget {
                                                     ),
                                                     Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      CrossAxisAlignment
+                                                          .start,
                                                       children: [
                                                         Text(
                                                           'Visibility',
@@ -513,10 +528,10 @@ class HomePage extends StatelessWidget {
                                                           '${hm!.forecastModel.forecastDay.first.hour[currentHour].feelslike_c} miles',
                                                           style: TextStyle(
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                              FontWeight
+                                                                  .w500,
                                                               color:
-                                                                  Colors.white,
+                                                              Colors.white,
                                                               fontSize: width *
                                                                   0.042),
                                                         ),
@@ -528,7 +543,7 @@ class HomePage extends StatelessWidget {
                                             ),
                                             Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 Row(
                                                   children: [
@@ -542,8 +557,8 @@ class HomePage extends StatelessWidget {
                                                     ),
                                                     Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      CrossAxisAlignment
+                                                          .start,
                                                       children: [
                                                         Text(
                                                           'Precipitation',
@@ -560,10 +575,10 @@ class HomePage extends StatelessWidget {
                                                           '${hm!.forecastModel.forecastDay.first.hour[currentHour].precip_mm}°',
                                                           style: TextStyle(
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                              FontWeight
+                                                                  .bold,
                                                               color:
-                                                                  Colors.white,
+                                                              Colors.white,
                                                               fontSize: width *
                                                                   0.039),
                                                         ),
@@ -584,8 +599,8 @@ class HomePage extends StatelessWidget {
                                                     ),
                                                     Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      CrossAxisAlignment
+                                                          .start,
                                                       children: [
                                                         Text(
                                                           'Humidity',
@@ -602,10 +617,10 @@ class HomePage extends StatelessWidget {
                                                           '${hm!.forecastModel.forecastDay.first.hour[currentHour].humidity}%',
                                                           style: TextStyle(
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                              FontWeight
+                                                                  .bold,
                                                               color:
-                                                                  Colors.white,
+                                                              Colors.white,
                                                               fontSize: width *
                                                                   0.039),
                                                         ),
@@ -626,8 +641,8 @@ class HomePage extends StatelessWidget {
                                                     ),
                                                     Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      CrossAxisAlignment
+                                                          .start,
                                                       children: [
                                                         Text(
                                                           'Dew Point',
@@ -644,10 +659,10 @@ class HomePage extends StatelessWidget {
                                                           '${hm!.forecastModel.forecastDay.first.hour[currentHour].dewpoint_c.round()}°',
                                                           style: TextStyle(
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                              FontWeight
+                                                                  .bold,
                                                               color:
-                                                                  Colors.white,
+                                                              Colors.white,
                                                               fontSize: width *
                                                                   0.039),
                                                         ),
@@ -666,7 +681,7 @@ class HomePage extends StatelessWidget {
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             'Sunrise And Sunset',
@@ -695,10 +710,12 @@ class HomePage extends StatelessWidget {
                                             horizontal: width * 0.04,
                                             vertical: height * 0.015),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
                                           children: [
                                             Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   'Sunrise',
@@ -710,17 +727,15 @@ class HomePage extends StatelessWidget {
                                                   '${hm!.forecastModel.forecastDay.first.astro.sunrise}',
                                                   style: TextStyle(
                                                       fontWeight:
-                                                      FontWeight
-                                                          .bold,
-                                                      color:
-                                                      Colors.white,
-                                                      fontSize: width *
-                                                          0.039),
+                                                      FontWeight.bold,
+                                                      color: Colors.white,
+                                                      fontSize: width * 0.039),
                                                 ),
                                               ],
                                             ),
                                             Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   'Sunset',
@@ -732,12 +747,9 @@ class HomePage extends StatelessWidget {
                                                   '${hm!.forecastModel.forecastDay.first.astro.sunset}',
                                                   style: TextStyle(
                                                       fontWeight:
-                                                      FontWeight
-                                                          .bold,
-                                                      color:
-                                                      Colors.white,
-                                                      fontSize: width *
-                                                          0.039),
+                                                      FontWeight.bold,
+                                                      color: Colors.white,
+                                                      fontSize: width * 0.039),
                                                 ),
                                               ],
                                             ),
@@ -782,10 +794,12 @@ class HomePage extends StatelessWidget {
                                             horizontal: width * 0.04,
                                             vertical: height * 0.016),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
                                           children: [
                                             Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   'MoonRise',
@@ -797,17 +811,15 @@ class HomePage extends StatelessWidget {
                                                   '${hm!.forecastModel.forecastDay.first.astro.moonrise}',
                                                   style: TextStyle(
                                                       fontWeight:
-                                                      FontWeight
-                                                          .bold,
-                                                      color:
-                                                      Colors.white,
-                                                      fontSize: width *
-                                                          0.039),
+                                                      FontWeight.bold,
+                                                      color: Colors.white,
+                                                      fontSize: width * 0.039),
                                                 ),
                                               ],
                                             ),
                                             Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   'MoonSet',
@@ -819,12 +831,9 @@ class HomePage extends StatelessWidget {
                                                   '${hm!.forecastModel.forecastDay.first.astro.moonset}',
                                                   style: TextStyle(
                                                       fontWeight:
-                                                      FontWeight
-                                                          .bold,
-                                                      color:
-                                                      Colors.white,
-                                                      fontSize: width *
-                                                          0.039),
+                                                      FontWeight.bold,
+                                                      color: Colors.white,
+                                                      fontSize: width * 0.039),
                                                 ),
                                               ],
                                             ),
@@ -844,9 +853,14 @@ class HomePage extends StatelessWidget {
                       ),
                     ],
                   );
-                } else if (snapshot.hasError) {
-                  return Text(snapshot.error.toString());
-                } else {
+                }
+                else if (snapshot.hasError) {
+                  return Center(child: Padding(
+                    padding: const EdgeInsets.all(9),
+                    child: Text(snapshot.error.toString(),style:const TextStyle(color:Colors.white)),
+                  ));
+                }
+                else {
                   return const Center(
                     child: CircularProgressIndicator(
                       color: Colors.white70,
@@ -860,32 +874,34 @@ class HomePage extends StatelessWidget {
         drawer: Drawer(
           child: Stack(
             children: [
-              // (isNightOrDay == 1)
-              //     ?
               Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Color(0xff0659c6),
-                            Color(0xff4389f3),
-                          ],
-                        ),
-                      ),
-                    ),
-                  // : Container(
-                  //     decoration: const BoxDecoration(
-                  //       gradient: LinearGradient(
-                  //         begin: Alignment.topCenter,
-                  //         end: Alignment.bottomCenter,
-                  //         colors: [
-                  //           Color(0xff19043D),
-                  //           Color(0xff290c41),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors:  [
+                        Color(0xff0d5cc5),
+                        Color(0xff439cf3),
+                      ]),
+                ),
+              ),
+              // Container(
+              //   decoration: BoxDecoration(
+              //     gradient: LinearGradient(
+              //       begin: Alignment.topCenter,
+              //       end: Alignment.bottomCenter,
+              //       colors: (isNightOrDay == 1)
+              //           ? [
+              //         const Color(0xff0659c6),
+              //         const Color(0xff4389f3),
+              //       ]
+              //           : [
+              //         const Color(0xff19043D),
+              //         const Color(0xff290c41),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               SingleChildScrollView(
                 child: Column(
                   children: [
@@ -925,11 +941,13 @@ class HomePage extends StatelessWidget {
                         child: buildListTile(Icons.home, 'Home')),
                     GestureDetector(
                         onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => SearchLocation(hm: hm!),
-                            ),
-                          );
+                          controller = TextEditingController();
+                          isShow = false;
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(
+                            builder: (context) =>
+                                SearchLocation(hm: hm!),
+                          ));
                         },
                         child: buildListTile(
                             Icons.location_on, 'Location Management')),
@@ -1080,7 +1098,9 @@ Stack night(double width, double height) {
             ],
           ),
         ),
-        child: Image.asset('assets/images/star.png',),
+        child: Image.asset(
+          'assets/images/star.png',
+        ),
       ),
       Positioned(
         top: height * -0.11,
@@ -1110,85 +1130,3 @@ Stack night(double width, double height) {
     ],
   );
 }
-
-//Consumer<HomeProvider>(
-//                               builder: (BuildContext context, value, Widget? child) {
-//                                 return Container(
-//                                   height: 35,
-//                                   width: 65,
-//                                   //width * 0.175
-//                                   padding: EdgeInsets.all(2.5),
-//                                   decoration: BoxDecoration(
-//                                       color: Colors.black26,
-//                                       borderRadius: BorderRadius.circular(5)),
-//                                   child: GestureDetector(
-//                                     onTap: () {
-//                                       homeProviderFalse.changeTemperature();
-//                                     },
-//                                     child: Row(
-//                                       children: [
-//                                         Expanded(
-//                                             child: Container(
-//                                               alignment: Alignment.center,
-//                                               decoration: BoxDecoration(
-//                                                   borderRadius:
-//                                                   BorderRadius.circular(6),
-//                                                   color: (changeTemp)
-//                                                       ? Colors.white
-//                                                       : null),
-//                                               child: Text(
-//                                                 'F',
-//                                                 style: TextStyle(
-//                                                     color: (changeTemp)
-//                                                         ? Colors.teal
-//                                                         : Colors.white),
-//                                               ),
-//                                             )),
-//                                         Expanded(
-//                                             child: Container(
-//                                               alignment: Alignment.center,
-//                                               decoration: BoxDecoration(
-//                                                   borderRadius:
-//                                                   BorderRadius.circular(6),
-//                                                   color: (!changeTemp)
-//                                                       ? Colors.white
-//                                                       : null),
-//                                               child: Text(
-//                                                 'C',
-//                                                 style: TextStyle(
-//                                                     color: (changeTemp)
-//                                                         ? Colors.white
-//                                                         : Colors.teal),
-//                                               ),
-//                                             ))
-//                                       ],
-//                                     ),
-//                                   ),
-//                                 );
-//                               },
-//                             ),
-//                             SizedBox(height: height * 0.3),
-//                             //todo -------------------------------> Text
-//                             Consumer<HomeProvider>(
-//                               builder: (BuildContext context, value, Widget? child) { return
-//                                 Text(
-//                                   '${(changeTemp) ? hm!.current.tempF.round() : hm!.current.tempC.round()}°'
-//                                       .toString(),
-//                                   style: TextStyle(
-//                                       fontWeight: FontWeight.w400,
-//                                       fontSize: width * 0.2,
-//                                       color: Colors.white),
-//                                 );
-//                                 },
-//                             ),
-//                             Consumer<HomeProvider>(
-//                               builder: (BuildContext context, HomeProvider value, Widget? child) {
-//                                 return Text(
-//                                   '${hm!.current.condition.text}'.toString(),
-//                                   style: TextStyle(
-//                                       fontWeight: FontWeight.w500,
-//                                       fontSize: width * 0.055,
-//                                       color: Colors.amber),
-//                                 );
-//                               },
-//                             ),

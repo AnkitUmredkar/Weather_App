@@ -13,6 +13,11 @@ class SearchProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void showWholeList(){
+    isShow = false;
+    notifyListeners();
+  }
+
   void searchLocationOnly(String location){
     search = location;
     notifyListeners();

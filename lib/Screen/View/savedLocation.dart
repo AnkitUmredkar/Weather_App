@@ -34,69 +34,121 @@ class SavedLocation extends StatelessWidget {
           ],
         ),
         body: Consumer<SavedLocationProvider>(
-          builder: (BuildContext context, SavedLocationProvider value, Widget? child) {
+          builder: (BuildContext context, SavedLocationProvider value,
+              Widget? child) {
             return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: List.generate(
-                    savedLocationProviderTrue.savedWeatherList.length,
-                        (index) => Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Expanded(
-                              child: Container(
-                                alignment: Alignment.center,
-                                height: height * 0.128 ,
-                                margin: EdgeInsets.symmetric(vertical: 10,horizontal: width * 0.02),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    gradient: LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: (savedLocationProviderTrue.savedList[index]['5'] == '1')
-                                            ?[
-                                          Color(0xff0d5cc5),
-                                          Color(0xff439cf3),
-                                        ]
-                                            : [
-                                          Color(0xff19043D),
-                                          Color(0xff341152),
-                                        ]
-                                    )),
-                                child: ListTile(
-                                  title: Row(
-                                    children: [
-                                      Container(
-                                        child: Text(
-                                          savedLocationProviderTrue.savedList[index]['0'],
-                                          style: TextStyle(color: Colors.white,fontSize: width * 0.05,fontWeight:FontWeight.w500),
-                                        ),
+                padding: const EdgeInsets.all(8.0),
+                child: ListView.builder(
+                    itemCount:
+                        savedLocationProviderTrue.savedWeatherList.length,
+                    itemBuilder: (context, index) {
+                      final name = savedLocationProviderTrue
+                          .savedWeatherList[index]
+                          .split('_')
+                          .sublist(0, 1)
+                          .join(' ');
+                      final region = savedLocationProviderTrue
+                          .savedWeatherList[index]
+                          .split('_')
+                          .sublist(1, 2)
+                          .join(' ');
+                      final country = savedLocationProviderTrue
+                          .savedWeatherList[index]
+                          .split('_')
+                          .sublist(2, 3)
+                          .join(' ');
+                      final status = savedLocationProviderTrue
+                          .savedWeatherList[index]
+                          .split('_')
+                          .sublist(3, 4)
+                          .join(' ');
+                      final temp = savedLocationProviderTrue
+                          .savedWeatherList[index]
+                          .split('_')
+                          .sublist(4, 5)
+                          .join(' ');
+                      final isDay = savedLocationProviderTrue
+                          .savedWeatherList[index]
+                          .split('_')
+                          .sublist(5, 6)
+                          .join(' ');
+                      final mintemp_c = savedLocationProviderTrue
+                          .savedWeatherList[index]
+                          .split('_')
+                          .sublist(6, 7)
+                          .join(' ');
+                      final maxtemp_c = savedLocationProviderTrue
+                          .savedWeatherList[index]
+                          .split('_')
+                          .sublist(7, 8)
+                          .join(' ');
+                      return Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: height * 0.128,
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: width * 0.02),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: (isDay == '1')
+                                          ? [
+                                              const Color(0xff0d5cc5),
+                                              const Color(0xff439cf3),
+                                            ]
+                                          : [
+                                              const Color(0xff19043D),
+                                              const Color(0xff341152),
+                                            ])),
+                              child: ListTile(
+                                title: Row(
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        name,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: width * 0.05,
+                                            fontWeight: FontWeight.w500),
                                       ),
-                                      Text(
-                                        ' (${savedLocationProviderTrue.savedList[index]['6']} ~ ${savedLocationProviderTrue.savedList[index]['7']}°C)',
-                                        style: const TextStyle(color: Colors.white),
-                                      ),
-                                    ],
-                                  ),
-                                  subtitle: Text(
-                                    '${savedLocationProviderTrue.savedList[index]['3']} ',
-                                    style: const TextStyle(color: Colors.white70),
-                                  ),
-                                  trailing: Text('${savedLocationProviderTrue.savedList[index]['4']}°C'
-                                    ,style: TextStyle(color: Colors.white,fontSize: width * 0.055),),
+                                    ),
+                                    Text(
+                                      ' ($mintemp_c ~ $maxtemp_c °C)',
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                                subtitle: Text(
+                                  '$status ',
+                                  style: const TextStyle(color: Colors.white70),
+                                ),
+                                trailing: Text(
+                                  '$temp °C',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: width * 0.055),
                                 ),
                               ),
                             ),
-                            GestureDetector(onTap: (){
-                              savedLocationProviderFalse.removeFromSaved(index);
-                            },child: Icon(Icons.delete,color: Colors.black54,))
-                          ],
-                        ),
-                  ),
-                ),
-              ),
-            );
+                          ),
+                          GestureDetector(
+                              onTap: () {
+                                savedLocationProviderFalse
+                                    .removeFromSaved(index);
+                              },
+                              child: const Icon(
+                                Icons.delete,
+                                color: Colors.black54,
+                              ))
+                        ],
+                      );
+                    }));
           },
         ),
       ),
