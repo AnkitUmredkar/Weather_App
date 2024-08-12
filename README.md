@@ -2,15 +2,54 @@
 
 ## Description
 
-- "Sky Scrapper" is a feature-rich weather application built using Flutter, incorporating key
-concepts such as API calling, Shared Preferences, and network connectivity. The app offers a
-comprehensive set of functionalities designed to provide users with accurate and timely weather
-information for cities, states, and countries.
-- The "Departure" app aims to create an immersive and personalized experience for users seeking
-spiritual guidance through the teachings of the Bhagvat Geeta. By incorporating local JSON
-storage, Shared Preferences, like functionality, themes, chapter images, splash screens, detailed
-verse screens, and multi-language support, the app offers a comprehensive solution for users to
-explore and engage with this sacred text.
+## 🌤 Current Weather 
+- Get real-time weather updates for your location.
+- Always know the latest weather conditions.
+
+## 🌡 Temperature Details 
+- View current, feels-like, high, and low temperatures.
+- Stay informed about temperature variations.
+
+## ☔️ Precipitation 
+- Check the chance of rain or snow.
+- Plan your day around the expected precipitation.
+
+## 💨 Wind Speed 
+- Know the current wind speed and direction.
+- Be prepared for windy conditions.
+
+## 🌅 Sunrise & Sunset 
+- See the exact times for sunrise and sunset.
+- Perfect for planning outdoor activities.
+
+## 📅 Daily Forecast 
+- Get a 7-day weather forecast.
+- Stay ahead with a week’s worth of weather predictions.
+
+## ⏰ Hourly Forecast 
+- Detailed weather predictions by the hour.
+- Know what to expect throughout the day.
+
+## 🗺 Weather Map 
+- Interactive map showing current weather patterns.
+- Visualize weather changes in your area.
+
+## 📱 Notifications 
+- Receive alerts for severe weather conditions.
+- Stay safe with timely weather warnings.
+
+## 🔄 Update Frequency 
+- Choose how often the weather data updates.
+- Customize to get the most current information.
+
+## 🌍 Multiple Locations 
+- Add and manage weather for multiple places.
+- Keep track of weather in different locations.
+
+## 🌙 Night Mode 
+- User-friendly night mode for low-light conditions.
+- Easier on the eyes during nighttime use.
+
 <h1 align="left"> </h1>
 <h2 align="center"> 🔶 Light Mode 🔶 </h2>
 
@@ -55,6 +94,7 @@ explore and engage with this sacred text.
 
 <h1 align="left"> </h1>
 
+
 <div align="center">
-  <video height="550" src="https://github.com/user-attachments/assets/67eb57d7-9885-4d40-bacc-d5ca8d889ba6"/>
+  <video height="550" src="https://github.com/user-attachments/assets/3d757a10-652b-424c-b9e3-e4fec256849f"/>
 </div>
